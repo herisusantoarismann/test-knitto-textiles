@@ -15,6 +15,7 @@ export const todosApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://jsonplaceholder.typicode.com",
   }),
+  tagTypes: ["Todo"],
   extractRehydrationInfo(action, { reducerPath }): any {
     if (isHydrateAction(action)) {
       return action.payload[reducerPath];
@@ -24,7 +25,18 @@ export const todosApi = createApi({
     todos: builder.query<ITodo[], number | string | string[]>({
       query: (page = 0) => `/todos?_start=${page}&_limit=10`,
     }),
+    addNewTodo: builder.mutation({
+      query: (payload) => ({
+        url: "/todos",
+        method: "POST",
+        body: payload,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["Todo"],
+    }),
   }),
 });
 
-export const { useTodosQuery } = todosApi;
+export const { useTodosQuery, useAddNewTodoMutation } = todosApi;
