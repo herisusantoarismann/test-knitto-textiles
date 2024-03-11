@@ -22,6 +22,9 @@ export const todosApi = createApi({
     }
   },
   endpoints: (builder) => ({
+    listTodos: builder.query<ITodo[], void>({
+      query: () => `/todos`,
+    }),
     todos: builder.query<ITodo[], number | string | string[]>({
       query: (page = 0) => `/todos?_start=${page}&_limit=10`,
     }),

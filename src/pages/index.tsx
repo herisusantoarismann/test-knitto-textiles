@@ -138,6 +138,24 @@ const Home = ({
   );
 };
 
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+// export const getStaticProps = wrapper.getStaticProps((store) => async () => {
+//   const res = await store.dispatch(todosApi.endpoints.listTodos.initiate());
+//   const data = res?.isSuccess ? res?.data : [];
+
+//   return {
+//     props: {
+//       data,
+//     },
+//     // Next.js will attempt to re-generate the page:
+//     // - When a request comes in
+//     // - At most once every 60 seconds
+//     revalidate: 60, // In seconds
+//   };
+// });
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const page = context.query._start ?? 0;
