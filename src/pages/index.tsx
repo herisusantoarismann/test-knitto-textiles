@@ -7,7 +7,7 @@ const Home = ({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="mx-auto max-w-screen-xl">
       {data.map((item: ITodo, index: number) => {
         return (
           <div key={index}>
@@ -15,7 +15,7 @@ const Home = ({
           </div>
         );
       })}
-    </main>
+    </div>
   );
 };
 
