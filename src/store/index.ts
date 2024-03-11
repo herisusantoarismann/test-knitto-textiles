@@ -1,12 +1,10 @@
 import { todosApi } from "@/services/todosApi";
 import { configureStore } from "@reduxjs/toolkit";
-import { paginationSlice } from "./features/pagination";
 import { createWrapper } from "next-redux-wrapper";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      pagination: paginationSlice.reducer,
       [todosApi.reducerPath]: todosApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

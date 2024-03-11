@@ -1,32 +1,31 @@
-import { todosApi, useTodosQuery } from "@/services/todosApi";
+import { Todo } from "@/components";
+import { todosApi } from "@/services/todosApi";
 import { wrapper } from "@/store";
-import { ITodo } from "@/types/todos";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 const Home = ({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <div className="mx-auto max-w-screen-xl">
-      {data.map((item: ITodo, index: number) => {
-        return (
-          <div key={index}>
-            <p>{item.title}</p>
-          </div>
-        );
-      })}
+    <div className="mx-auto max-w-screen-xl p-4">
+      <Todo data={data ?? []} />
     </div>
   );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async () => {
-    const res = await store.dispatch(todosApi.endpoints.todos.initiate(0));
+  (store) => async (context) => {
+    const page = context.query._start ?? 0;
+    const res = await store.dispatch(todosApi.endpoints.todos.initiate(page));
     const data = res?.isSuccess ? res?.data : [];
 
     // Pass data to the page via props
-    return { props: { data } };
+    return {
+      props: {
+        data,
+      },
+    };
   }
-) satisfies GetServerSideProps<{ data: ITodo[] }>;
+) satisfies GetServerSideProps<{}>;
 
 export default Home;
